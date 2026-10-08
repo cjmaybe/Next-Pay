@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">Next Pay</string>
+    <string name="accessibility_service_label">Next Pay Offline USSD Automation</string>
+    <string name="accessibility_service_description">Next Pay uses this service to automate offline USSD (*99#) payments and balance checks securely without exposing your details.</string>
+</resources>

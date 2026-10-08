@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+    <group
+        android:translateX="0"
+        android:translateY="0">
+        <!-- Rounded diamond / shield badge base -->
+        <path
+            android:fillColor="#1B3A4B"
+            android:pathData="M54,26 C64,26 78,35 78,48 C78,65 57,80 54,82 C51,80 30,65 30,48 C30,35 44,26 54,26 Z" />
+        <!-- Inner accent ring / shield border -->
+        <path
+            android:strokeColor="#00E676"
+            android:strokeWidth="2.5"
+            android:fillColor="#00000000"
+            android:pathData="M54,29 C62,29 74,37 74,48 C74,62 56,75 54,77 C52,75 34,62 34,48 C34,37 46,29 54,29 Z" />
+        <!-- Fast forward transfer lightning / N-arrow symbol -->
+        <!-- Left vertical bar of N -->
+        <path
+            android:fillColor="#FFFFFF"
+            android:pathData="M42,39 L47,39 L47,60 L42,60 Z" />
+        <!-- Right vertical bar of N -->
+        <path
+            android:fillColor="#00E676"
+            android:pathData="M61,39 L66,39 L66,60 L61,60 Z" />
+        <!-- Dynamic diagonal lightning bolt connecting the N -->
+        <path
+            android:fillColor="#69F0AE"
+            android:pathData="M43,40 L58,54 L52,54 L65,63 L50,49 L56,49 Z" />
+        <!-- Floating currency dot / spark -->
+        <path
+            android:fillColor="#FFD700"
+            android:pathData="M54,34 A3,3 0 1,1 54,40 A3,3 0 1,1 54,34" />
+    </group>
+</vector>

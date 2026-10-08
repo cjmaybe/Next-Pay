@@ -1,0 +1,6 @@
+{
+  "name": "Next Pay",
+  "description": "Offline payments via USSD (*99#) without internet connection with instant balance check and smart carrier routing.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
