@@ -26,8 +26,9 @@ class QrScannerManager {
 
     fun decodeFromUri(context: Context, uri: Uri): UpiData? {
         return try {
-            val inputStream = context.contentResolver.openInputStream(uri)
-            val bitmap = BitmapFactory.decodeStream(inputStream) ?: return null
+            val bitmap = context.contentResolver.openInputStream(uri)?.use {
+                BitmapFactory.decodeStream(it)
+            } ?: return null
             decodeFromBitmap(bitmap)
         } catch (e: Exception) {
             null
@@ -70,10 +71,12 @@ class QrScannerManager {
             val data = toByteArray(buffer)
             val width = imageProxy.width
             val height = imageProxy.height
+            // Rows can be padded: the buffer stride may be wider than the image width.
+            val rowStride = imageProxy.planes[0].rowStride
 
             val source = PlanarYUVLuminanceSource(
                 data,
-                width,
+                rowStride,
                 height,
                 0,
                 0,

@@ -19,7 +19,7 @@ import kotlinx.coroutines.launch
  * Android implementation of [UssdEnginePort] that automates USSD sessions via
  * [UssdAccessibilityService].
  *
- * Exact proven implementation ported from OffPay.
+ * Exact proven implementation ported from NextPay.
  */
 class UssdEngine(
     private val context: Context,
@@ -62,7 +62,7 @@ class UssdEngine(
     /**
      * Initiates a new USSD session by dialing the given code.
      *
-     * Order of operations matches OffPay:
+     * Order of operations matches NextPay:
      *  1. Double-tap guard
      *  2. dismissDialog() — swallow leftover dialog from prior run
      *  3. resetForNewSession() on the service — wipe lastEmittedText
@@ -77,10 +77,13 @@ class UssdEngine(
     override suspend fun dial(code: String) {
         // 1. Double-tap protection: ignore if < 2s since last dial
         val now = SystemClock.elapsedRealtime()
-        if (now - lastDialTime < DOUBLE_TAP_COOLDOWN_MS) {
-            return
+        val sinceLast = now - lastDialTime
+        if (lastDialTime != 0L && sinceLast < DOUBLE_TAP_COOLDOWN_MS) {
+            // Wait out the cooldown instead of silently skipping: skipping left the caller
+            // listening to a stale session id and the flow would hang until timeout.
+            delay(DOUBLE_TAP_COOLDOWN_MS - sinceLast)
         }
-        lastDialTime = now
+        lastDialTime = SystemClock.elapsedRealtime()
 
         val service = UssdAccessibilityService.instance
 

@@ -457,12 +457,12 @@ class OverlayControllerImpl(private val context: Context) : OverlayController {
 
     companion object {
         private const val COLOR_DIM = 0xCC000000.toInt()
-        private const val COLOR_SURFACE_HIGH = 0xFF102027.toInt()
-        private const val COLOR_BORDER = 0xFF1E3A4A.toInt()
+        private const val COLOR_SURFACE_HIGH = 0xFF1A1A1A.toInt()
+        private const val COLOR_BORDER = 0xFF3A3A3A.toInt()
         private const val COLOR_WHITE = 0xFFFFFFFF.toInt()
-        private const val COLOR_TEXT_SECONDARY = 0xFF90A4AE.toInt()
-        private const val COLOR_ACCENT = 0xFF00E676.toInt() // Next Pay Emerald
-        private const val COLOR_DANGER = 0xFFFF5252.toInt()
-        private const val COLOR_MINIMAL_FILL = 0xEB0D1B2A.toInt()
+        private const val COLOR_TEXT_SECONDARY = 0xFFA0A0A0.toInt()
+        private const val COLOR_ACCENT = 0xFFFFFFFF.toInt() // Monochrome accent
+        private const val COLOR_DANGER = 0xFFD0D0D0.toInt()
+        private const val COLOR_MINIMAL_FILL = 0xEB000000.toInt()
     }
 }

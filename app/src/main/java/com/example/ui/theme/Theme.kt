@@ -35,7 +35,23 @@ private val DarkColorScheme = darkColorScheme(
     surfaceVariant = SurfaceVariantDark,
     onSurfaceVariant = OnSurfaceVariantDark,
     outline = OutlineDark,
-    outlineVariant = OutlineVariantDark
+    outlineVariant = OutlineVariantDark,
+    error = ErrorDark,
+    onError = OnErrorDark,
+    errorContainer = ErrorContainerDark,
+    onErrorContainer = OnErrorContainerDark,
+    surfaceTint = PrimaryDark,
+    inverseSurface = OnSurfaceDark,
+    inverseOnSurface = SurfaceDark,
+    inversePrimary = OnPrimaryDark,
+    scrim = androidx.compose.ui.graphics.Color.Black,
+    surfaceBright = SurfaceDark,
+    surfaceDim = SurfaceDark,
+    surfaceContainerLowest = BackgroundDark,
+    surfaceContainerLow = SurfaceDark,
+    surfaceContainer = SurfaceVariantDark,
+    surfaceContainerHigh = SurfaceVariantDark,
+    surfaceContainerHighest = PrimaryContainerDark
 )
 
 private val LightColorScheme = lightColorScheme(
@@ -58,13 +74,29 @@ private val LightColorScheme = lightColorScheme(
     surfaceVariant = SurfaceVariantLight,
     onSurfaceVariant = OnSurfaceVariantLight,
     outline = OutlineLight,
-    outlineVariant = OutlineVariantLight
+    outlineVariant = OutlineVariantLight,
+    error = ErrorLight,
+    onError = OnErrorLight,
+    errorContainer = ErrorContainerLight,
+    onErrorContainer = OnErrorContainerLight,
+    surfaceTint = PrimaryLight,
+    inverseSurface = OnSurfaceLight,
+    inverseOnSurface = SurfaceLight,
+    inversePrimary = OnPrimaryLight,
+    scrim = androidx.compose.ui.graphics.Color.Black,
+    surfaceBright = SurfaceLight,
+    surfaceDim = SurfaceLight,
+    surfaceContainerLowest = BackgroundLight,
+    surfaceContainerLow = SurfaceLight,
+    surfaceContainer = SurfaceVariantLight,
+    surfaceContainerHigh = SurfaceVariantLight,
+    surfaceContainerHighest = PrimaryContainerLight
 )
 
 @Composable
 fun NextPayTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
-    dynamicColor: Boolean = false, // Keep branded emerald colors consistent
+    dynamicColor: Boolean = false, // Monochrome: never use wallpaper colors
     content: @Composable () -> Unit
 ) {
     val colorScheme = when {

@@ -25,10 +25,12 @@ class MainActivity : ComponentActivity() {
             NextPayTheme {
                 Surface(modifier = Modifier.fillMaxSize()) {
                     val prefs = NextPayApplication.instance.preferencesRepository
-                    val onboardingCompleted by prefs.isOnboardingCompleted.collectAsState(initial = true)
+                    val onboardingCompleted by prefs.isOnboardingCompleted.collectAsState(initial = null)
                     val scope = rememberCoroutineScope()
 
-                    if (!onboardingCompleted) {
+                    if (onboardingCompleted == null) {
+                        // Preferences still loading: render nothing to avoid flashing the wrong screen.
+                    } else if (onboardingCompleted == false) {
                         OnboardingFlow(
                             onComplete = {
                                 scope.launch {

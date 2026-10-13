@@ -72,7 +72,7 @@ fun OnboardingFlow(
 
     val pages = listOf(
         OnboardingPage(
-            title = "Welcome to Next Pay",
+            title = "Welcome to Next Pay v2",
             description = "Send money and check your bank balance completely offline without any internet connection or Wi-Fi.",
             icon = Icons.Default.WifiOff,
             highlight = "100% Offline UPI"
@@ -146,12 +146,22 @@ fun OnboardingFlow(
                             .background(MaterialTheme.colorScheme.primaryContainer),
                         contentAlignment = Alignment.Center
                     ) {
-                        Icon(
-                            imageVector = page.icon,
-                            contentDescription = null,
-                            tint = MaterialTheme.colorScheme.primary,
-                            modifier = Modifier.size(52.dp)
-                        )
+                        if (pageIndex == 0) {
+                            androidx.compose.foundation.Image(
+                                painter = androidx.compose.ui.res.painterResource(id = com.example.R.drawable.nextpay_icon_src),
+                                contentDescription = "Next Pay v2 Logo",
+                                modifier = Modifier
+                                    .size(76.dp)
+                                    .clip(CircleShape)
+                            )
+                        } else {
+                            Icon(
+                                imageVector = page.icon,
+                                contentDescription = null,
+                                tint = MaterialTheme.colorScheme.primary,
+                                modifier = Modifier.size(52.dp)
+                            )
+                        }
                     }
 
                     Spacer(modifier = Modifier.height(28.dp))

@@ -28,7 +28,7 @@ interface UssdFrameListener {
  * extracts visible text, classifies frames as menu or terminal,
  * and provides methods to drive the carrier dialog programmatically.
  *
- * Exact proven implementation from OffPay:
+ * Exact proven implementation from NextPay:
  *  - Uses `event.source` as the primary tree (works even when overlay
  *    is on top — `rootInActiveWindow` would point at the overlay).
  *  - Handles `TYPE_VIEW_TEXT_CHANGED` and `TYPE_WINDOWS_CHANGED`. The

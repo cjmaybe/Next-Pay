@@ -36,7 +36,7 @@ object UpiParser {
         }
 
         // Direct UPI ID format: username@bank
-        val upiRegex = Regex("^[a-zA-Z0-9.\\-_]{2,256}@[a-zA-Z]{2,64}$")
+        val upiRegex = Regex("^[a-zA-Z0-9.\\-_]{2,256}@[a-zA-Z0-9]{2,64}$")
         if (upiRegex.matches(trimmed)) {
             return UpiData(vpa = trimmed, rawQrString = trimmed)
         }

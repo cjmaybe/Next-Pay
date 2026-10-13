@@ -35,7 +35,10 @@ class ActionRunner(private val engine: UssdEnginePort) {
             Regex("transaction\\s+successful", RegexOption.IGNORE_CASE),
             Regex("txn\\s+successful", RegexOption.IGNORE_CASE),
             Regex("payment\\s+successful", RegexOption.IGNORE_CASE),
-            Regex("ref(?:erence)?\\s*(?:id|no|number|#)?\\s*[:\\-]?\\s*\\d{6,}", RegexOption.IGNORE_CASE)
+            Regex("ref(?:erence)?\\s*(?:id|no|number|#)?\\s*[:\\-]?\\s*\\d{6,}", RegexOption.IGNORE_CASE),
+            Regex("debited\\s+(by\\s+)?(rs\\.?|inr|₹)?\\s*\\d+", RegexOption.IGNORE_CASE),
+            Regex("upi\\s+ref(?:erence)?\\s*(?:id|no|number|#)?\\s*[:\\-]?\\s*\\d+", RegexOption.IGNORE_CASE),
+            Regex("money\\s+(transferred|sent)", RegexOption.IGNORE_CASE)
         )
     }
 
@@ -113,6 +116,7 @@ class ActionRunner(private val engine: UssdEnginePort) {
                             eventFlow.emit(ActionEvent.Done(text))
                             resultDeferred.complete(ActionResult(success = true, resultText = text))
                             engine.dismissDialog()
+                            engine.cancel()
                             job?.cancel()
                             return@collect
                         }
@@ -124,6 +128,7 @@ class ActionRunner(private val engine: UssdEnginePort) {
                                 terminated = true
                                 eventFlow.emit(ActionEvent.Error(errorMsg, text))
                                 resultDeferred.complete(ActionResult(success = false, resultText = errorMsg))
+                                engine.cancel()
                                 job?.cancel()
                                 return@collect
                             }

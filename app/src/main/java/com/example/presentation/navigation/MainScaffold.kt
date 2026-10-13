@@ -1,10 +1,20 @@
 package com.example.presentation.navigation
 
 import androidx.activity.compose.BackHandler
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.res.painterResource
+import androidx.compose.material3.Surface
+import com.example.R
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.HelpOutline
@@ -67,18 +77,51 @@ fun MainScaffold(
         topBar = {
             CenterAlignedTopAppBar(
                 title = {
-                    Text(
-                        text = when (currentScreen) {
-                            Screen.Pay -> "Next Pay"
-                            Screen.Scan -> "Scan UPI QR"
-                            Screen.Balance -> "Bank Balance"
-                            Screen.History -> "Transactions"
-                            Screen.Settings -> "Settings"
-                            Screen.Faq -> "Help & FAQ"
-                        },
-                        style = MaterialTheme.typography.titleLarge,
-                        fontWeight = FontWeight.Bold
-                    )
+                    if (currentScreen == Screen.Pay) {
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Image(
+                                painter = painterResource(id = R.drawable.nextpay_icon_src),
+                                contentDescription = "Next Pay Logo",
+                                modifier = Modifier
+                                    .size(28.dp)
+                                    .clip(RoundedCornerShape(8.dp))
+                            )
+                            Spacer(modifier = Modifier.width(8.dp))
+                            Text(
+                                text = "Next Pay",
+                                style = MaterialTheme.typography.titleLarge,
+                                fontWeight = FontWeight.Bold
+                            )
+                            Spacer(modifier = Modifier.width(6.dp))
+                            Surface(
+                                color = MaterialTheme.colorScheme.primaryContainer,
+                                shape = RoundedCornerShape(6.dp)
+                            ) {
+                                Text(
+                                    text = "v2",
+                                    modifier = Modifier.padding(horizontal = 6.dp, vertical = 2.dp),
+                                    style = MaterialTheme.typography.labelSmall,
+                                    fontWeight = FontWeight.Bold,
+                                    color = MaterialTheme.colorScheme.primary
+                                )
+                            }
+                        }
+                    } else {
+                        Text(
+                            text = when (currentScreen) {
+                                Screen.Pay -> "Next Pay v2"
+                                Screen.Scan -> "Scan UPI QR"
+                                Screen.Balance -> "Bank Balance"
+                                Screen.History -> "Transactions"
+                                Screen.Settings -> "Settings"
+                                Screen.Faq -> "Help & FAQ"
+                            },
+                            style = MaterialTheme.typography.titleLarge,
+                            fontWeight = FontWeight.Bold
+                        )
+                    }
                 },
                 navigationIcon = {
                     if (currentScreen == Screen.Settings || currentScreen == Screen.Faq) {

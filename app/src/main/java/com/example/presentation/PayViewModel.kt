@@ -229,8 +229,52 @@ class PayViewModel(
     }
 
     fun onTestSimulationClicked() {
-        onPinChanged("123456")
-        attemptPayment()
+        val state = _uiState.value
+        val recipient = state.vpa.ifBlank { "alice@upi" }
+        val amount = state.amount.ifBlank { "500" }
+        val note = state.note.ifBlank { "Next Pay v2 Test" }
+        _uiState.update { it.copy(vpa = recipient, amount = amount, note = note, pin = "123456") }
+        runSimulatedPayment(recipient, amount, note)
+    }
+
+    private fun runSimulatedPayment(vpa: String, amount: String, note: String) {
+        sessionJob?.cancel()
+        _uiState.update { it.copy(errors = emptyMap(), isSessionActive = true) }
+        _sessionState.value = SessionState.Running(
+            label = "Connecting to offline carrier network (*99#)",
+            stepIndex = 0,
+            total = Actions.SendUpi.steps.size
+        )
+
+        sessionJob = viewModelScope.launch {
+            val steps = listOf(
+                "Dialing *99*1*3# via SIM 1...",
+                "Carrier connected: Sending UPI ID ($vpa)",
+                "Carrier prompt: Sending amount (₹$amount)",
+                "Adding remark ($note)",
+                "Entering masked UPI PIN (******)",
+                "Confirming transaction with bank..."
+            )
+
+            for (i in steps.indices) {
+                delay(700)
+                _sessionState.value = SessionState.Running(
+                    label = steps[i],
+                    stepIndex = i,
+                    total = steps.size
+                )
+            }
+
+            delay(800)
+            val refId = (100000000000L..999999999999L).random().toString()
+            val successMsg = "Payment of ₹$amount to $vpa successful. Ref No: $refId. Your bank account has been debited."
+            _sessionState.value = SessionState.Success(resultText = successMsg)
+            NextPayApplication.instance.triggerFeedback(isSuccess = true)
+            onSessionEnded()
+
+            // Simulation only: intentionally NOT written to transaction history,
+            // otherwise fake payments would show up as real ones in History and totals.
+        }
     }
 
     fun pasteFromClipboard(context: Context) {
@@ -261,6 +305,14 @@ class PayViewModel(
     fun attemptPayment() {
         val state = _uiState.value
         val mode = operationMode.value
+
+        if (mode != OperationMode.MANUAL && !actionRunner.isServiceEnabled()) {
+            _sessionState.value = SessionState.Failed(
+                message = "Next Pay Accessibility Service is disabled. Please turn it on in Settings to automate offline USSD payments.",
+                resultText = "Service Disabled"
+            )
+            return
+        }
 
         val formValidation = InputValidator.validatePaymentForm(
             vpa = state.vpa,
@@ -402,7 +454,9 @@ class PayViewModel(
             }
 
             val result = run.result.await()
-            if (!result.success && _sessionState.value is SessionState.Running) {
+            // A user cancel completes the run with "Cancelled"; cancelSession() already resets the UI,
+            // so don't flip it into a "Payment failed" state.
+            if (!result.success && result.resultText != "Cancelled" && _sessionState.value is SessionState.Running) {
                 _sessionState.value = SessionState.Failed(
                     message = result.resultText,
                     resultText = result.resultText

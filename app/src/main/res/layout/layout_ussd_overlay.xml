@@ -29,7 +29,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Dismiss"
-            android:textColor="#00E676"
+            android:textColor="#FFFFFF"
             android:textSize="12sp" />
     </LinearLayout>
 
@@ -39,7 +39,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="4dp"
         android:text="Processing offline USSD session..."
-        android:textColor="#B0BEC5"
+        android:textColor="#BDBDBD"
         android:textSize="13sp" />
 
     <ProgressBar
@@ -48,5 +48,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:indeterminate="true" />
+        android:indeterminate="true"
+        android:indeterminateTint="#FFFFFF" />
 </LinearLayout>

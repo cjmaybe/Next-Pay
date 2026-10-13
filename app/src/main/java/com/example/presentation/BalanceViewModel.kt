@@ -128,7 +128,36 @@ class BalanceViewModel(
     }
 
     fun onTestSimulationClicked() {
-        attemptCheckBalance("123456")
+        runSimulatedCheck()
+    }
+
+    private fun runSimulatedCheck() {
+        sessionJob?.cancel()
+        _uiState.update { it.copy(pinError = null, isSessionActive = true) }
+        _sessionState.value = SessionState.Running(
+            label = "Connecting to offline bank gateway (*99*3#)...",
+            stepIndex = 0,
+            total = 2
+        )
+
+        sessionJob = viewModelScope.launch {
+            delay(700)
+            _sessionState.value = SessionState.Running(
+                label = "Verifying UPI PIN with bank...",
+                stepIndex = 1,
+                total = 2
+            )
+            delay(800)
+            val balText = "State Bank of India: Available balance for A/C **4589 is ₹24,850.50"
+            _sessionState.value = SessionState.Success(resultText = balText)
+            NextPayApplication.instance.triggerFeedback(isSuccess = true)
+            prefsRepo.setLastBalance(
+                text = balText,
+                timestamp = System.currentTimeMillis()
+            )
+            loadData()
+            onSessionEnd()
+        }
     }
 
     fun onSimSlotSelected(slot: Int) {
